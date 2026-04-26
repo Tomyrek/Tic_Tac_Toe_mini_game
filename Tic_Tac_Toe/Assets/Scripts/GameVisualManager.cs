@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
-public class GameVisualManager : NetworkBehaviour
+public class GameVisualManager : MonoBehaviour //zamenjen NetworkBehaviour sa MonoBehaviour
 {
     private const float GRID_SIZE = 3.0f;
 
@@ -27,10 +27,10 @@ public class GameVisualManager : NetworkBehaviour
     }
     private void GameManager_OnRematch(object sender, System.EventArgs e)
     {
-        if (!NetworkManager.Singleton.IsServer)
+       /* if (!NetworkManager.Singleton.IsServer)
         {
             return;
-        }
+        } */
         foreach(GameObject visualGameObject in visualGameObjectList)
         {
             Destroy(visualGameObject    );
@@ -57,18 +57,18 @@ public class GameVisualManager : NetworkBehaviour
                     lineCompletePrefab, 
                     GetGridWorldPosition(e.line.centerGridPosition.x,e.line.centerGridPosition.y), 
                     Quaternion.Euler(0,0,eulerZ));
-            lineCompleteTransform.GetComponent<NetworkObject>().Spawn(true);
+           // lineCompleteTransform.GetComponent<NetworkObject>().Spawn(true);
 
             visualGameObjectList.Add(lineCompleteTransform.gameObject);
     }
     private void GameManager_OnClickedOnGridPosition(object sender, GameManager.OnClickedOnGridPositionEventArgs e)
     {
         Debug.Log("GMClick");
-        SpawnObjectRpc(e.x, e.y, e.playerType);
+        SpawnObject(e.x, e.y, e.playerType);//SpawnObjectRpc(e.x, e.y, e.playerType);
     }
 
-    [Rpc(SendTo.Server)]
-    private void SpawnObjectRpc(int x , int y, GameManager.PlayerType playerType)
+    //[Rpc(SendTo.Server)]
+    private void SpawnObject/*Rpc*/(int x , int y, GameManager.PlayerType playerType)
     {
         Debug.Log("SpawnObject");
         Transform prefab;
@@ -83,7 +83,7 @@ public class GameVisualManager : NetworkBehaviour
                 break;
         }
         Transform spawnedCrossTransform = Instantiate(prefab, GetGridWorldPosition(x,y), Quaternion.identity);
-        spawnedCrossTransform.GetComponent<NetworkObject>().Spawn(true);
+        //spawnedCrossTransform.GetComponent<NetworkObject>().Spawn(true);
 
         visualGameObjectList.Add(spawnedCrossTransform.gameObject);
         

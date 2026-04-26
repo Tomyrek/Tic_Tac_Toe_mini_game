@@ -14,13 +14,9 @@ public class SoundManager : MonoBehaviour
     }
     private void GameManager_OnGameWin(object sender, GameManager.OnGameWinEventArgs e)
     {
-        if(GameManager.Instance.GetLocalPlayerType() == e.winPlayerType){
+        
         Transform sfxTransform = Instantiate(winSfxPrefab);
-        Destroy(sfxTransform.gameObject, 5f);}
-        else{
-            Transform sfxTransform = Instantiate(loseSfxPrefab);
-            Destroy(sfxTransform.gameObject, 5f);
-        }
+        Destroy(sfxTransform.gameObject, 5f);
     }   
     private void GameManager_OnPlacedObject(object sender, System.EventArgs e)
     {
